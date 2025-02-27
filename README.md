@@ -1,6 +1,12 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg)
 
-# Tiny Tapeout Analog Project Template
+# TT10 VGA DAC Party
+
+An experiment in trying to generate analog VGA display signals:
+*   A more-interesting 24-bit VGA pattern generator, as a digital block hardened with OpenLane..
+*   ...then attached to 3 instances of a segmented DAC (one for each of the RGB colour channels of a VGA display).
+
+This is a Tiny Tapeout 1.8V Analog Project in 2x2 tiles.
 
 - [Read the documentation for project](docs/info.md)
 

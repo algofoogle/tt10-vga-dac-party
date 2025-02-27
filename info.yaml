@@ -24,24 +24,25 @@ project:
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  ui[0]: "inymode[0]"
+  ui[1]: "inymode[1]"
+  ui[2]: "inymode[2]"
+  ui[3]: "mixnoise"
+  ui[4]: "usewobble"
+  ui[5]: "vbias[0]"
+  ui[6]: "vbias[1]"
+  ui[7]: "vbias[2]"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  # These are compatible with the RGB222 Tiny VGA PMOD (https://github.com/mole99/tiny-vga)
+  uo[0]: "r7"
+  uo[1]: "g7"
+  uo[2]: "b7"
+  uo[3]: "vsync"
+  uo[4]: "r6"
+  uo[5]: "g6"
+  uo[6]: "b6"
+  uo[7]: "hsync"
 
   # Bidirectional pins
   uio[0]: ""

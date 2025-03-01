@@ -30,6 +30,6 @@ TBC.
 
 ## External hardware
 
-For the full analog 24-bit experience, you'll need pull-up 2.3k resistors (to 1.8V) on each of the 3 analog outputs (not the 4th `test` signal). This converts the outputs to an inverted voltage range of 1.8V-0.8V -- my memory (and quick calculation) tells me that my segmented current-steering DACs sink a current in the range of 0~430&micro;A, i.e. 1/0.00043 = ~2.3k&ohm;. You'll then need an external inverting opamp configuration for each of the 3 analog colour channels, that converts 1.8V-0.8V to 0-0.7V, able to drive the 75&ohm; load of a VGA display.
+For the full analog 24-bit experience, you'll need pull-up 2.3k resistors (to 1.8V) on each of the 3 analog outputs (not the 4th `test` signal). This converts the outputs to an inverted voltage range of 1.8V-0.6V -- my memory (and quick calculation) tells me that my segmented current-steering DACs sink a current in the range of 0~727&micro;A, i.e. 1/0.000727 = ~1.65k&ohm;. You'll then need an external inverting opamp configuration for each of the 3 analog colour channels, that converts 1.8V-0.8V to 0-0.7V, able to drive the 75&ohm; load of a VGA display.
 
 TBC.

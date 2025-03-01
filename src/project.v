@@ -36,10 +36,6 @@ module tt_um_algofoogle_tt10_vga_dac_party (
     wire [11:0] G;
     wire [11:0] B;
 
-    wire test;
-
-    assign ua[3] = test;
-
     analog_control_wrapper analog_control_wrapper (
         .VPWR       (VDPWR),
         .VGND       (VGND),
@@ -49,7 +45,6 @@ module tt_um_algofoogle_tt10_vga_dac_party (
         .uio_in     (uio_in),
         .uio_out    (uio_out),
         .uio_oe     (uio_oe),
-        .ua         (ua),
         .ena        (ena),
         .clk        (clk),
         .rst_n      (rst_n),
@@ -131,7 +126,7 @@ module tt_um_algofoogle_tt10_vga_dac_party (
         .sd1(B[9]),
         .sd2(B[10]),
         .sd3(B[11]),
-        .Vbias(test),
+        .Vbias(ua[3]),
         .Vout(ua[2])
     );
 

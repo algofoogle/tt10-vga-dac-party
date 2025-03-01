@@ -7,12 +7,10 @@ readnet spice $::env(PDK_ROOT)/$::env(PDK)/libs.ref/sky130_fd_sc_hd/spice/sky130
 # 'lvs' command selects which one actually matters.
 
 # Add spice files of analog block(s):
-readnet spice ../xschem/simulation/csdac_nom.spice  $source
 readnet spice ../xschem/simulation/segdac.spice     $source
-readnet spice ../xschem/simulation/thermo2bit.spice $source
 
 # Add GL verilog of digital block(s) (i.e. flat file from OpenLane hardening):
-readnet verilog ../verilog/gl/controller.v $source
+readnet verilog ../verilog/gl/analog_control_wrapper.pnl.v $source
 
 # Top-level abstract integration verilog:
 readnet verilog ../src/project.v $source

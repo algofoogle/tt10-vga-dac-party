@@ -39,32 +39,32 @@ lvs.report: $(PROJECT_NAME).lvs.spice ../src/project.v
 	netgen -batch eval "set project $(PROJECT_NAME) ; source tcl/lvs_netgen.tcl"
 
 lvs: lvs.report
-	@propOk=1; match=0; port=1; \
-    if grep -q "match uniquely" lvs.report; then \
-        match=1; \
+	@bash -c 'propOk=OK; match=FAIL; port=OK; \
+    if grep -Hn "match uniquely" lvs.report; then \
+        match=OK; \
     fi; \
-    if grep -q "Property errors were found" lvs.report; then \
-        propOk=0; \
+    if grep -Hn "Property errors were found" lvs.report; then \
+        propOk=FAIL; \
     fi; \
-    if grep -q "failed pin matching" lvs.report; then \
-        match=0; \
+    if grep -Hn "failed pin matching" lvs.report; then \
+        match=FAIL; \
     fi; \
-    if grep -q "Final result: Netlists do not match" lvs.report; then \
-        match=0; \
+    if grep -Hn "Final result: Netlists do not match" lvs.report; then \
+        match=FAIL; \
     fi; \
-    if grep -q "port errors" lvs.report; then \
-        port=0; \
+    if grep -Hn "port errors" lvs.report; then \
+        port=FAIL; \
     fi; \
-    if grep -q "Final result: Circuits match uniquely\." lvs.report; then \
-        match=1; \
+    if grep -Hn "Final result: Circuits match uniquely\." lvs.report; then \
+        match=OK; \
     fi; \
-	if [ $$match -eq 1 ] && [ $$propOk -eq 1 ] && [ $$port -eq 1 ]; then \
+	if [ "$$match" == "OK" ] && [ "$$propOk" == "OK" ] && [ "$$port" == "OK" ]; then \
         echo "LVS OK"; \
 	    exit 0; \
     else \
         echo "LVS FAIL: match=$$match properties=$$propOk port=$$port"; \
 	    exit 1; \
-    fi
+    fi'
 
 update_gds:
 	mkdir -p ../gds ../lef

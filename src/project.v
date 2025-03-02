@@ -36,15 +36,30 @@ module tt_um_algofoogle_tt10_vga_dac_party (
     wire [11:0] G;
     wire [11:0] B;
 
-    analog_control_wrapper analog_control_wrapper (
+    wire bias1 = ui_in[5];
+    wire bias2 = ui_in[6];
+    wire bias3 = ui_in[7];
+
+    wire bdoe0 = uio_oe[0];
+    wire bdoe1 = uio_oe[1];
+    wire bdoe2 = uio_oe[2];
+    wire bdoe3 = uio_oe[3];
+    wire bdoe4 = uio_oe[4];
+    wire bdoe5 = uio_oe[5];
+    wire bdoe6 = uio_oe[6];
+    wire bdoe7 = uio_oe[7];
+
+    wire [7:0] bidir_out = uio_out;
+
+    analog_control_wrapper analog_control_wrapper_1 (
         .VPWR       (VDPWR),
         .VGND       (VGND),
 
-        .ui_in      (ui_in),
+        .ui_in      ({bias3, bias2, bias1, ui_in[4:0]}),
         .uo_out     (uo_out),
         .uio_in     (uio_in),
-        .uio_out    (uio_out),
-        .uio_oe     (uio_oe),
+        .uio_oe     ({bdoe7,bdoe6,bdoe5,bdoe4,bdoe3,bdoe2,bdoe1,bdoe0}),
+        .uio_out    (bidir_out),
         .ena        (ena),
         .clk        (clk),
         .rst_n      (rst_n),
@@ -67,8 +82,8 @@ module tt_um_algofoogle_tt10_vga_dac_party (
     );
 
     segdac segdac_red (
-        .VCC(VDPWR),
-        .VSS(VGND),
+        .vcc(VDPWR),
+        .vss(VGND),
         .bias1(Rbias1),
         .bias2(Rbias2),
         .bias3(Rbias3),
@@ -84,12 +99,13 @@ module tt_um_algofoogle_tt10_vga_dac_party (
         .sd1(R[9]),
         .sd2(R[10]),
         .sd3(R[11]),
+        .Vbias(),
         .Vout(ua[0])
     );
 
     segdac segdac_green (
-        .VCC(VDPWR),
-        .VSS(VGND),
+        .vcc(VDPWR),
+        .vss(VGND),
         .bias1(Gbias1),
         .bias2(Gbias2),
         .bias3(Gbias3),
@@ -105,12 +121,13 @@ module tt_um_algofoogle_tt10_vga_dac_party (
         .sd1(G[9]),
         .sd2(G[10]),
         .sd3(G[11]),
+        .Vbias(),
         .Vout(ua[1])
     );
 
     segdac segdac_blue (
-        .VCC(VDPWR),
-        .VSS(VGND),
+        .vcc(VDPWR),
+        .vss(VGND),
         .bias1(Bbias1),
         .bias2(Bbias2),
         .bias3(Bbias3),

@@ -40,22 +40,22 @@ lvs.report: $(PROJECT_NAME).lvs.spice ../src/project.v
 
 lvs: lvs.report
 	@bash -c 'propOk=OK; match=FAIL; port=OK; \
-    if grep -Hn "match uniquely" lvs.report; then \
+    if grep -q "match uniquely" lvs.report; then \
         match=OK; \
     fi; \
-    if grep -Hn "Property errors were found" lvs.report; then \
+    if grep -q "Property errors were found" lvs.report; then \
         propOk=FAIL; \
     fi; \
-    if grep -Hn "failed pin matching" lvs.report; then \
+    if grep -q "failed pin matching" lvs.report; then \
         match=FAIL; \
     fi; \
-    if grep -Hn "Final result: Netlists do not match" lvs.report; then \
+    if grep -q "Final result: Netlists do not match" lvs.report; then \
         match=FAIL; \
     fi; \
-    if grep -Hn "port errors" lvs.report; then \
+    if grep -q "port errors" lvs.report; then \
         port=FAIL; \
     fi; \
-    if grep -Hn "Final result: Circuits match uniquely\." lvs.report; then \
+    if grep -q "Final result: Circuits match uniquely\." lvs.report; then \
         match=OK; \
     fi; \
 	if [ "$$match" == "OK" ] && [ "$$propOk" == "OK" ] && [ "$$port" == "OK" ]; then \

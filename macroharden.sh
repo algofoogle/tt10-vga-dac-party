@@ -5,6 +5,6 @@ if [ -z "$PDK_ROOT"    ]; then echo "PDK_ROOT isn't set. Did you remember to run
 
 rm -rf openlane/runs/manual
 mkdir -p openlane/runs/manual
-python -m openlane --pdk-root "$PDK_ROOT" --docker-no-tty --dockerized --run-tag manual --force-run-dir openlane/runs/manual openlane/config_merged.json --design-dir .
+python -m openlane --pdk-root "$PDK_ROOT" --docker-no-tty --dockerized --run-tag manual --force-run-dir openlane/runs/manual openlane/config.json --design-dir .
 ls -aldh openlane/runs/manual/final/gds/*.gds
 

@@ -25,8 +25,8 @@
   "MAGIC_WRITE_LEF_PINONLY": 1,
   "DESIGN_NAME": "analog_control_wrapper",
   "VERILOG_FILES": [
-    "dir::src/core_design.v",
-    "dir::src/analog_control_wrapper.v"
+    "dir::verilog/rtl/core_design.v",
+    "dir::verilog/rtl/analog_control_wrapper.v"
   ],
   "DIE_AREA": "0 0 315 205",
   "FP_DEF_TEMPLATE": "dir::def/digital_block_pins_template.def",

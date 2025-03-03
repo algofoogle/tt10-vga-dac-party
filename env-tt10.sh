@@ -15,7 +15,7 @@ fi
 
 export TTPYTHON=python3.11
 export TTPROMPT=tt10
-export TTTOOLS=/home/anton/ttsetup@tt10
+export TTTOOLS=$HOME/ttsetup@tt10
 mkdir -p "$TTTOOLS/pdk"
 export PDK_ROOT=$TTTOOLS/pdk
 export PDK=sky130A

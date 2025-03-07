@@ -23,7 +23,10 @@ public:
   bool examine_mode;
   bool examine_condition_met;
   bool paused;
+  bool hsync_polarity; // true=(high during sync)
+  bool vsync_polarity;
   int frame_counter;
+  int frame_step_counter;
 
   MAIN_TB(void) {
     log_vsync = false;
@@ -33,14 +36,21 @@ public:
     frame_counter = 0;
     old_hsync_asserted = true;
     old_vsync_asserted = true;
+    frame_step_counter = -1;
+    // Sync on high:
+    hsync_polarity = true;
+    vsync_polarity = true;
+    // // Sync on low:
+    // hsync_polarity = true;
+    // vsync_polarity = true;
   }
 
   ~MAIN_TB() { }
 
   // virtual bool hsync_asserted(void) { return 0 == m_core->hsync; }
   // virtual bool vsync_asserted(void) { return 0 == m_core->vsync; }
-  virtual bool hsync_asserted(void) { return 0 == (m_core->uo_out & 0b1000'0000); }
-  virtual bool vsync_asserted(void) { return 0 == (m_core->uo_out & 0b0000'1000); }
+  virtual bool hsync_asserted(void) { return (0 != (m_core->uo_out & 0b1000'0000)) == hsync_polarity; }
+  virtual bool vsync_asserted(void) { return (0 != (m_core->uo_out & 0b0000'1000)) == vsync_polarity; }
 
   virtual bool hsync_started(void) { return (!old_hsync_asserted) &&  hsync_asserted(); }
   virtual bool vsync_started(void) { return (!old_vsync_asserted) &&  vsync_asserted(); }
@@ -85,6 +95,14 @@ public:
         print_time();
         printf("VSYNC released; starting frame %d.\n", frame_counter);
       }
+      if (frame_step_counter != -1) {
+        if (--frame_step_counter == 0) {
+          // Stop.
+          pause(true);
+          printf("Finished stepping frame(s); frame_counter=%d\n", frame_counter);
+          frame_step_counter = -1;
+        }
+      }
       if (examine()) {
         pause(true);
         printf("(Examine condition met)\n");
@@ -92,6 +110,20 @@ public:
         examine_mode = false; // Disable examine mode. User can turn it back on while we're paused, if they want.
       }
     }
+  }
+
+  virtual void reset_ticks(int count) {
+    // Assert reset:
+    m_core->rst_n = 0;
+    // Clock 'count' times:
+    while (count-- > 0) tick();
+    // Release reset:
+    m_core->rst_n = 1;
+  }
+
+  virtual void frame_step(int count) {
+    frame_step_counter = count;
+    pause(false);
   }
 
   virtual bool examine(void) {
@@ -104,7 +136,7 @@ public:
     paused = state;
     if (old != paused) {
       print_time();
-      printf("Simulation will %s\n", paused ? "pause" : "resume");
+      printf("Simulation will %s; at frame %d\n", paused ? "pause" : "resume", frame_counter);
     }
     return old;
   }

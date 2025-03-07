@@ -271,6 +271,17 @@ void process_sdl_events() {
         case SDLK_SPACE:
           TB->pause(!TB->paused);
           break;
+        case SDLK_f:
+          printf("Frame step: Advancing 1 frame\n");
+          TB->frame_step(1);
+          break;
+        case SDLK_r:
+          if (KMOD_CTRL & e.key.keysym.mod) {
+            //NOTE: Also search for SDL_SCANCODE_R which is an async rst_n input.
+            printf("Asserting 3 synchronous reset ticks...\n");
+            TB->reset_ticks(3);
+          }
+          break;
         case SDLK_h:
           gHighlight = !gHighlight;
           printf("Highlighting turned %s\n", gHighlight ? "ON" : "off");
@@ -540,6 +551,7 @@ void check_performance() {
     long hz = c / d;
     hz *= 1000L;
     // Now print long-term average:
+    printf(" - Frame %5d", TB->frame_counter);
     printf(" - Total average FPS: %5.2f", float(TB->frame_counter)/float(time_now-gOriginalTime)*1000.0f);
     // printf(" - a=%ld b=%ld c=%ld, d=%ld, hz=%ld", a, b, c, d, hz);
     printf(" - m_tickcount=");
@@ -807,6 +819,13 @@ int main(int argc, char **argv) {
   int h_adjust_countdown = REFRESH_FRAME*2;
   int v_shift = VBP*2; // This will try to find the vertical start of the image.
 
+  // === INITIAL CONDITIONS ===
+  TB->pause(true); printf("*** NOTE: STARTING PAUSED. Press CTRL+R for synchronous reset and 'F' to advance 1 frame, or space bar for free running.\n");
+  h_adjust = 47;
+  v = v_shift = 33;
+  gHighlight = false;
+  // ==========================
+
   while (!gQuit) {
     if (TB->done()) gQuit = true;
     if (TB->paused) SDL_WaitEvent(NULL); // If we're paused, an event is needed before we could resume.
@@ -835,7 +854,7 @@ int main(int argc, char **argv) {
 
     check_performance();
 
-    clear_freshness(framebuffer);
+    if (gHighlight) clear_freshness(framebuffer);
 
     //SMELL: In my RTL, I call the time that comes before the horizontal display area the BACK porch,
     // even though arguably it comes first (so surely should be the FRONT), but this swapped naming

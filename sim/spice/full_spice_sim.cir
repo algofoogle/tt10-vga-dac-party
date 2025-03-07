@@ -16,7 +16,7 @@ Full circuit sim of extracted digital and analog blocks
 .param mc_pr_switch=0
 
 *NOTE: Weird port ordering matches how it was extracted by Magic:
-xtt
+xttdut
 + clk
 + ena
 + rst_n
@@ -82,7 +82,8 @@ XTestpin testpin ua3 GND vcca tt08pin
 CRpin    routpin GND 5p
 CGpin    goutpin GND 5p
 CBpin    boutpin GND 5p
-CTestpin testpin GND 3p ; Smooths out Vbias bounce.
+* Probably not needed (pin path itself has capacitance?):
+* CTestpin testpin GND 3p ; Smooths out Vbias bounce.
 
 * 'external' pull-up resistors for the SEGDACs' outputs:
 RRpin   routpin vcc 1650
@@ -181,8 +182,8 @@ Vin7 ui_in7 GND dc {vcc}
 *       net     ref fn     init   alt  dly  rise  fall  dut  period
 * 25MHz clock:
 Vclk    clk     GND PULSE   0.0 {vcc}   0n    1n    1n  20n  40n
-* reset signal
-Vreset  rst_n   GND PULSE {vcc}   0.0  10n    1n    1n  80n  34m
+* reset signal (4 clocks, hopefully enough to get stable):
+Vreset  rst_n   GND PULSE {vcc}   0.0  10n    1n    1n  160n  34m
 
 .control
     * option trtol=8 reltol=2e-3
@@ -208,6 +209,51 @@ Vreset  rst_n   GND PULSE {vcc}   0.0  10n    1n    1n  80n  34m
     + v(uo_out5)
     + v(uo_out6)
     + v(uo_out7)
+    + "xttdut.segdac_red.bias1"
+    + "xttdut.segdac_red.bias2"
+    + "xttdut.segdac_red.bias3"
+    + "xttdut.segdac_green.bias1"
+    + "xttdut.segdac_green.bias2"
+    + "xttdut.segdac_green.bias3"
+    + "xttdut.segdac_blue.bias1"
+    + "xttdut.segdac_blue.bias2"
+    + "xttdut.segdac_blue.bias3"
+    + "xttdut.segdac_red.sa1"
+    + "xttdut.segdac_red.sa2"
+    + "xttdut.segdac_red.sa3"
+    + "xttdut.segdac_red.sb1"
+    + "xttdut.segdac_red.sb2"
+    + "xttdut.segdac_red.sb3"
+    + "xttdut.segdac_red.sc1"
+    + "xttdut.segdac_red.sc2"
+    + "xttdut.segdac_red.sc3"
+    + "xttdut.segdac_red.sd1"
+    + "xttdut.segdac_red.sd2"
+    + "xttdut.segdac_red.sd3"
+    + "xttdut.segdac_green.sa1"
+    + "xttdut.segdac_green.sa2"
+    + "xttdut.segdac_green.sa3"
+    + "xttdut.segdac_green.sb1"
+    + "xttdut.segdac_green.sb2"
+    + "xttdut.segdac_green.sb3"
+    + "xttdut.segdac_green.sc1"
+    + "xttdut.segdac_green.sc2"
+    + "xttdut.segdac_green.sc3"
+    + "xttdut.segdac_green.sd1"
+    + "xttdut.segdac_green.sd2"
+    + "xttdut.segdac_green.sd3"
+    + "xttdut.segdac_blue.sa1"
+    + "xttdut.segdac_blue.sa2"
+    + "xttdut.segdac_blue.sa3"
+    + "xttdut.segdac_blue.sb1"
+    + "xttdut.segdac_blue.sb2"
+    + "xttdut.segdac_blue.sb3"
+    + "xttdut.segdac_blue.sc1"
+    + "xttdut.segdac_blue.sc2"
+    + "xttdut.segdac_blue.sc3"
+    + "xttdut.segdac_blue.sd1"
+    + "xttdut.segdac_blue.sd2"
+    + "xttdut.segdac_blue.sd3"
     + clk
     + rst_n
     * + v(uio_out0)
@@ -270,6 +316,51 @@ Vreset  rst_n   GND PULSE {vcc}   0.0  10n    1n    1n  80n  34m
     + v(uo_out5)
     + v(uo_out6)
     + v(uo_out7)
+    + "xttdut.segdac_red.bias1"
+    + "xttdut.segdac_red.bias2"
+    + "xttdut.segdac_red.bias3"
+    + "xttdut.segdac_green.bias1"
+    + "xttdut.segdac_green.bias2"
+    + "xttdut.segdac_green.bias3"
+    + "xttdut.segdac_blue.bias1"
+    + "xttdut.segdac_blue.bias2"
+    + "xttdut.segdac_blue.bias3"
+    + "xttdut.segdac_red.sa1"
+    + "xttdut.segdac_red.sa2"
+    + "xttdut.segdac_red.sa3"
+    + "xttdut.segdac_red.sb1"
+    + "xttdut.segdac_red.sb2"
+    + "xttdut.segdac_red.sb3"
+    + "xttdut.segdac_red.sc1"
+    + "xttdut.segdac_red.sc2"
+    + "xttdut.segdac_red.sc3"
+    + "xttdut.segdac_red.sd1"
+    + "xttdut.segdac_red.sd2"
+    + "xttdut.segdac_red.sd3"
+    + "xttdut.segdac_green.sa1"
+    + "xttdut.segdac_green.sa2"
+    + "xttdut.segdac_green.sa3"
+    + "xttdut.segdac_green.sb1"
+    + "xttdut.segdac_green.sb2"
+    + "xttdut.segdac_green.sb3"
+    + "xttdut.segdac_green.sc1"
+    + "xttdut.segdac_green.sc2"
+    + "xttdut.segdac_green.sc3"
+    + "xttdut.segdac_green.sd1"
+    + "xttdut.segdac_green.sd2"
+    + "xttdut.segdac_green.sd3"
+    + "xttdut.segdac_blue.sa1"
+    + "xttdut.segdac_blue.sa2"
+    + "xttdut.segdac_blue.sa3"
+    + "xttdut.segdac_blue.sb1"
+    + "xttdut.segdac_blue.sb2"
+    + "xttdut.segdac_blue.sb3"
+    + "xttdut.segdac_blue.sc1"
+    + "xttdut.segdac_blue.sc2"
+    + "xttdut.segdac_blue.sc3"
+    + "xttdut.segdac_blue.sd1"
+    + "xttdut.segdac_blue.sd2"
+    + "xttdut.segdac_blue.sd3"
     + clk
     + rst_n
     * + v(uio_out0)

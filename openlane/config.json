@@ -44,5 +44,9 @@
     "met4 0 0 160 35.4"
   ],
 
+  "//DECAP_CELL": "sky130_fd_sc_hd__decap_1",
+  "DECAP_CELL": "sky130_fd_sc_hd__fill_*",
+  "RSZ_DONT_TOUCH_RX": "^[RGB]\\[[0-9]+\\]$",
+
   "////FP_PIN_ORDER_CFG": "dir::openlane/pin_order.cfg"
 }

@@ -1,3 +1,21 @@
+*   Upgrade ngspice
+*   Change decap cells to fill cells only for simpler extraction
+
+*   ~~Make strong output cells (at least 4x, and all equal) for DAC inputs~~ -- Doesn't work properly in OpenLane (resizes, or timing vios, or other faults?) so instead:
+    *   Try my thermo2bit cells -- cramped area, poor routing?
+    *   Remove wrapper's invert, and use individual inv_4 cells instead? 380nm overlap expected
+    *   Add my own (hier?) invertering buffers in segdac, maybe rotated N=>E and 'corner' routes?
+        *   3x bias in top-right corner
+        *   12x seg inputs down E side
+*   Registered outputs
+*   Inverted output option
+*   No "rift" option
+*   24 ports for DAC binary outputs testing
+*   Compare fill cell extraction to fill cell removal; does the circuit still work? Are the rails still there? Taps will remain.
+*   Try d_cosim
+
+
+
 Existing sim SPICE extraction script:
 
 ```tcl

@@ -2,6 +2,18 @@
 // that OpenLane 2 will synthesise to interface with the analog SEGDACs
 // that I'll place manually afterwards.
 
+
+module buffer (
+  input wire in,
+  output wire out
+);
+  (* keep *) sky130_fd_sc_hd__clkbuf_4 skybuf (
+    .A(in),
+    .X(out)
+  );
+endmodule
+
+
 module analog_control_wrapper (
     // Standard TT digital IOs, on the North side:
     input  wire [7:0] ui_in,    // Dedicated inputs
@@ -69,9 +81,13 @@ module analog_control_wrapper (
     // 4 instances (i.e. 4 segments) per each channel...
     // Note that the RGB outputs from the controller get negated here,
     // since the segdacs use NFETs (sink current, rather than sourcing).
-    thermo2bit decode_r[3:0] ( .bin(~rgb[ 7: 0]), .thermo(R) );
-    thermo2bit decode_g[3:0] ( .bin(~rgb[15: 8]), .thermo(G) );
-    thermo2bit decode_b[3:0] ( .bin(~rgb[23:16]), .thermo(B) );
+    wire [11:0] Runbuf;
+    wire [11:0] Gunbuf;
+    wire [11:0] Bunbuf;
+    thermo2bit decode_r[3:0] ( .bin(~rgb[ 7: 0]), .thermo(Runbuf) );
+    thermo2bit decode_g[3:0] ( .bin(~rgb[15: 8]), .thermo(Gunbuf) );
+    thermo2bit decode_b[3:0] ( .bin(~rgb[23:16]), .thermo(Bunbuf) );
+    buffer dac_in_buffer[35:0] ( .in({Runbuf,Gunbuf,Bunbuf}), .out({R,G,B}) );
 
 endmodule
 
